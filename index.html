@@ -9,6 +9,59 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ── Perfil: inputs editáveis ── */
+        .detalhe-input {
+            border: none;
+            border-bottom: 1.5px solid #e0e0e0;
+            outline: none;
+            font-size: 14px;
+            color: var(--text-main, #111);
+            background: transparent;
+            width: 100%;
+            padding: 4px 0;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        .detalhe-input:focus {
+            border-bottom-color: var(--primary, #e50615);
+        }
+        .perfil-foto {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            background-color: #f0f0f0;
+        }
+        .perfil-email-sub {
+            font-size: 13px;
+            color: #888;
+            margin-top: 2px;
+            display: block;
+        }
+        .btn-salvar-perfil {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: calc(100% - 32px);
+            margin: 16px 16px 0;
+            padding: 14px;
+            background: var(--primary, #e50615);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .btn-salvar-perfil:active {
+            opacity: 0.85;
+        }
+    </style>
 </head>
 <body>
     <div class="phone-container">
@@ -198,7 +251,7 @@
                         <span class="material-symbols-outlined">location_on</span>
                         <div>
                             <span class="local-texto">Entregar em</span>
-                            <span class="local-endereco">Minha Localidade</span>
+                            <span class="local-endereco" id="home-local-endereco">Minha Localidade</span>
                         </div>
                         <span class="material-symbols-outlined">expand_more</span>
                     </div>
@@ -210,12 +263,12 @@
                 <div class="home-conteudo">
                     <h2>O que você precisa?</h2>
                     <div class="categorias-grid">
-                        <button class="categoria"><div class="categoria-icone"><span class="material-symbols-outlined">restaurant</span></div><span>Restaurantes</span></button>
+                        <button class="categoria" onclick="abrirListaEmpresas()"><div class="categoria-icone"><span class="material-symbols-outlined">restaurant</span></div><span>Restaurantes</span></button>
                         <button class="categoria"><div class="categoria-icone"><span class="material-symbols-outlined">storefront</span></div><span>Mercado</span></button>
                         <button class="categoria"><div class="categoria-icone"><span class="material-symbols-outlined">medication</span></div><span>Farmácia</span></button>
                         <button class="categoria"><div class="categoria-icone"><span class="material-symbols-outlined">liquor</span></div><span>Bebidas</span></button>
                         <button class="categoria"><div class="categoria-icone"><span class="material-symbols-outlined">pets</span></div><span>Pet Shop</span></button>
-                        <button class="categoria"><div class="categoria-icone"><span class="material-symbols-outlined">two_wheeler</span></div><span>Entregas</span></button>
+                        <button class="categoria" onclick="abrirListaEmpresas()"><div class="categoria-icone"><span class="material-symbols-outlined">restaurant_menu</span></div><span>Ver Cardápio</span></button>
                     </div>
                 </div>
                 <nav class="navegacao-inferior">
@@ -233,10 +286,12 @@
                 <nav class="navegacao-inferior"><button onclick="mudarTela('tela-5')" class="nav-item"><span class="material-symbols-outlined">home</span><span>Início</span></button><button class="nav-item ativo"><span class="material-symbols-outlined">search</span><span>Buscar</span></button><button onclick="mudarTela('tela-7')" class="nav-item"><span class="material-symbols-outlined">receipt_long</span><span>Pedidos</span></button><button onclick="mudarTela('tela-9')" class="nav-item"><span class="material-symbols-outlined">person</span><span>Perfil</span></button></nav>
             </section>
 
-            <!-- TELA 7: PEDIDOS -->
+            <!-- TELA 7: PEDIDOS DO CLIENTE (tempo real) -->
             <section id="tela-7" class="tela">
                 <div class="pedidos-cabecalho"><h1>Meus Pedidos</h1></div>
-                <div class="pedidos-conteudo"><div class="pedido-card"><div class="pedido-imagem" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB9qmCO1wwCO4N0iVnQWSPyVBHgwgZEXoQCF_0SPnDK-u1tits_-bmrj5XJY6rJBISIp4V6VNhhqkgO0-FKRGGt9kHBayxaeJKs4chrxUo4PBM0kFbVU-VKldj_2uv0PFReISHO7Yc-Tikbzi2Oyt-BZRqI8h5r3cJlEJACPTXLJnI6eR-MExNYdgnCWuRGTQX3MFh_mkViSIxRd5PCW5jTmMRrjOQk7b-PLyDk2tNQT37tXo3wroQ2JmEOZiU1c_chvrkP9c6AQVo')"></div><div class="pedido-info"><div class="pedido-titulo"><h3>Burger King</h3><span class="pedido-status status-andamento">Saiu para entrega</span></div><p class="pedido-data">Hoje, 19:30 • Pedido #4821</p><p class="pedido-descricao">1x Whopper Combo, 1x Batata Grande</p></div></div><button onclick="mudarTela('tela-8')" class="btn-chat"><span class="material-symbols-outlined">chat</span><span>Chat com Entregador</span></button></div>
+                <div class="pedidos-conteudo" id="pedidos-cliente-lista">
+                    <p style="text-align:center; padding:20px; color:#888;">Carregando pedidos...</p>
+                </div>
                 <nav class="navegacao-inferior"><button onclick="mudarTela('tela-5')" class="nav-item"><span class="material-symbols-outlined">home</span><span>Início</span></button><button onclick="mudarTela('tela-6')" class="nav-item"><span class="material-symbols-outlined">search</span><span>Buscar</span></button><button class="nav-item ativo"><span class="material-symbols-outlined">receipt_long</span><span>Pedidos</span></button><button onclick="mudarTela('tela-9')" class="nav-item"><span class="material-symbols-outlined">person</span><span>Perfil</span></button></nav>
             </section>
 
@@ -251,27 +306,75 @@
             <!-- TELA 9: PERFIL CLIENTE -->
             <section id="tela-9" class="tela">
                 <div class="perfil-cabecalho"><h1>Meu Perfil</h1></div>
-                <div class="perfil-conteudo"><div class="perfil-foto-container"><div class="perfil-foto" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdfNGj9M5PWs6ndJyrqKlftGJxQCay23IDeqSjrZr2uEE5rpgzA_W7x_sj50n3uEwXXuBP_1X1wnpueL20XuVppn2evqajkJWmkjHwpoohbJKGtGLNYILf_hal-eRCwK678boFLs2v2RXByyR1S1D_eXIhkOkDymsi52Roq2wJMGPB64Xur8Eswjq3TwZVxEVCXw87w5qW_joqA8ezHd-ljbU1BLcFkFrB9PZxwnQJ5iuBhnS_QkjhJaZIFk-q6RxpvVp9gMipJ_Y')"></div><button class="btn-camera"><span class="material-symbols-outlined">camera_alt</span></button></div><h2 id="nomePerfil">Maria Silva</h2><button class="btn-mudar-perfil">Mudar Perfil</button></div>
-                <div class="perfil-detalhes"><div class="detalhe-item"><div class="detalhe-icone"><span class="material-symbols-outlined">mail</span></div><div class="detalhe-conteudo"><span class="detalhe-rotulo">Email</span><span class="detalhe-valor" id="emailPerfil">maria.silva@email.com</span></div></div><div class="detalhe-item"><div class="detalhe-icone"><span class="material-symbols-outlined">call</span></div><div class="detalhe-conteudo"><span class="detalhe-rotulo">Número</span><span class="detalhe-valor">(11) 98765-4321</span></div></div><div class="detalhe-item"><div class="detalhe-icone"><span class="material-symbols-outlined">location_on</span></div><div class="detalhe-conteudo"><span class="detalhe-rotulo">Localidade</span><span class="detalhe-valor">Rua das Flores, 123 - São Paulo</span></div><button class="btn-editar"><span class="material-symbols-outlined">edit</span></button></div></div>
-                <button onclick="sairDaConta()" class="btn-sair"><span class="material-symbols-outlined">logout</span><span>Sair da Conta</span></button><p class="versao-app">Versão 2.4.0</p>
-                <nav class="navegacao-inferior"><button onclick="mudarTela('tela-5')" class="nav-item"><span class="material-symbols-outlined">home</span><span>Início</span></button><button onclick="mudarTela('tela-6')" class="nav-item"><span class="material-symbols-outlined">search</span><span>Buscar</span></button><button onclick="mudarTela('tela-7')" class="nav-item"><span class="material-symbols-outlined">receipt_long</span><span>Pedidos</span></button><button class="nav-item ativo"><span class="material-symbols-outlined">person</span><span>Perfil</span></button></nav>
+
+                <!-- Foto + nome + e-mail -->
+                <div class="perfil-conteudo">
+                    <div class="perfil-foto-container">
+                        <div class="perfil-foto" id="perfilFotoEl"></div>
+                        <button class="btn-camera" onclick="document.getElementById('inputFotoPerfil').click()">
+                            <span class="material-symbols-outlined">camera_alt</span>
+                        </button>
+                        <!-- Input oculto para selecionar imagem da galeria -->
+                        <input type="file" id="inputFotoPerfil" accept="image/*" style="display:none;">
+                    </div>
+                    <h2 id="nomePerfil">Carregando...</h2>
+                    <span class="perfil-email-sub" id="emailPerfil"></span>
+                </div>
+
+                <!-- Campos editáveis -->
+                <div class="perfil-detalhes">
+                    <div class="detalhe-item">
+                        <div class="detalhe-icone"><span class="material-symbols-outlined">call</span></div>
+                        <div class="detalhe-conteudo">
+                            <span class="detalhe-rotulo">Número</span>
+                            <input id="perfilTelefone" class="detalhe-input" type="tel" placeholder="(XX) XXXXX-XXXX">
+                        </div>
+                    </div>
+                    <div class="detalhe-item">
+                        <div class="detalhe-icone"><span class="material-symbols-outlined">location_on</span></div>
+                        <div class="detalhe-conteudo">
+                            <span class="detalhe-rotulo">Localidade</span>
+                            <input id="perfilLocalidade" class="detalhe-input" type="text" placeholder="Sua cidade ou endereço">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botão salvar -->
+                <button onclick="salvarPerfil()" class="btn-salvar-perfil">
+                    <span class="material-symbols-outlined">save</span>
+                    Salvar Alterações
+                </button>
+
+                <button onclick="sairDaConta()" class="btn-sair">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Sair da Conta</span>
+                </button>
+                <p class="versao-app">Versão 2.4.0</p>
+
+                <nav class="navegacao-inferior">
+                    <button onclick="mudarTela('tela-5')" class="nav-item"><span class="material-symbols-outlined">home</span><span>Início</span></button>
+                    <button onclick="mudarTela('tela-6')" class="nav-item"><span class="material-symbols-outlined">search</span><span>Buscar</span></button>
+                    <button onclick="mudarTela('tela-7')" class="nav-item"><span class="material-symbols-outlined">receipt_long</span><span>Pedidos</span></button>
+                    <button class="nav-item ativo"><span class="material-symbols-outlined">person</span><span>Perfil</span></button>
+                </nav>
             </section>
 
-            <!-- TELA 10: MINHA LOJA -->
+            <!-- TELA 10: MINHA LOJA (pedidos em tempo real) -->
             <section id="tela-10" class="tela">
                 <div class="loja-header">Minha Loja</div>
                 <div class="status-box"><span>Status da Loja: <strong id="status-text">Aberto</strong></span><div id="switch" class="switch"><div class="circle"></div></div></div>
-                <div class="loja-cards"><div class="loja-card"><span>Pedidos Pendentes</span><h2>5</h2></div><div class="loja-card"><span>Em Preparo</span><h2>3</h2></div></div>
+                <div class="loja-cards"><div class="loja-card"><span>Pedidos Pendentes</span><h2 id="contador-pendentes">0</h2></div><div class="loja-card"><span>Em Preparo</span><h2 id="contador-preparo">0</h2></div></div>
                 <div class="loja-section-title">Pedidos Recentes</div>
-                <div class="loja-pedidos"><div class="loja-pedido"><div class="pedido-top"><strong>Maria Silva</strong><strong>R$ 67,90</strong></div><small>#2847</small><div class="pedido-list">2x Hambúrguer Artesanal<br>1x Batata Frita<br>1x Refrigerante</div><button class="btn-aceitar" onclick="aceitarPedido(this)">Aceitar</button></div><div class="loja-pedido"><div class="pedido-top"><strong>João Santos</strong><strong>R$ 42,50</strong></div><small>#2846</small><div class="pedido-list">1x Hambúrguer Bacon<br>1x Suco Natural</div><button class="btn-aceitar" onclick="aceitarPedido(this)">Aceitar</button></div></div>
+                <div class="loja-pedidos" id="loja-pedidos-lista">
+                    <p style="text-align:center; padding:20px; color:#888;">Carregando pedidos...</p>
+                </div>
                 <nav class="navegacao-inferior"><button class="nav-item ativo" onclick="mudarTela('tela-10')"><span class="material-symbols-outlined">home</span><span>Início</span></button><button class="nav-item" onclick="mudarTela('tela-11')"><span class="material-symbols-outlined">restaurant_menu</span><span>Cardápio</span></button><button class="nav-item" onclick="mudarTela('tela-12')"><span class="material-symbols-outlined">chat</span><span>Mensagens</span></button><button class="nav-item" onclick="mudarTela('tela-13')"><span class="material-symbols-outlined">settings</span><span>Ajustes</span></button></nav>
             </section>
 
-            <!-- TELA 11: CARDÁPIO (com FAB para cadastrar produto) -->
+            <!-- TELA 11: CARDÁPIO -->
             <section id="tela-11" class="tela">
                 <div class="cardapio-header"><div class="cardapio-top"><button onclick="mudarTela('tela-10')" class="btn-voltar"><span class="material-symbols-outlined">arrow_back</span></button><h1>Cardápio Digital</h1></div><div class="cardapio-search"><span class="material-symbols-outlined">search</span><input type="text" id="cardapio-busca" placeholder="Buscar produtos..."></div></div>
                 <div class="cardapio-content" id="cardapio-content"></div>
-                <!-- Botão FAB que ABRE a tela de cadastrar produto -->
                 <button class="cardapio-fab" onclick="abrirCadastroProduto()">
                     <span class="material-symbols-outlined">add</span>
                 </button>
@@ -292,7 +395,7 @@
                 <nav class="navegacao-inferior"><button onclick="mudarTela('tela-10')" class="nav-item"><span class="material-symbols-outlined">home</span><span>Início</span></button><button onclick="mudarTela('tela-11')" class="nav-item"><span class="material-symbols-outlined">restaurant_menu</span><span>Cardápio</span></button><button onclick="mudarTela('tela-12')" class="nav-item"><span class="material-symbols-outlined">chat</span><span>Mensagens</span></button><button class="nav-item ativo"><span class="material-symbols-outlined">settings</span><span>Ajustes</span></button></nav>
             </section>
 
-            <!-- TELA 14: CADASTRAR PRODUTO (NOVA TELA) -->
+            <!-- TELA 14: CADASTRAR PRODUTO -->
             <section id="tela-14" class="tela">
                 <div class="tela-cabecalho">
                     <button onclick="fecharCadastroProduto()" class="btn-voltar">
@@ -316,7 +419,6 @@
                             </div>
                             <input type="file" id="productPhotoInput" accept="image/png, image/jpeg, image/jpg" style="display: none;">
                         </div>
-
                         <div class="campo-input-produto">
                             <label>Nome do Produto</label>
                             <div class="input-wrapper-produto">
@@ -324,7 +426,6 @@
                                 <input type="text" id="productName" placeholder="Ex: Hambúrguer Artesanal" autocomplete="off">
                             </div>
                         </div>
-
                         <div class="campo-input-produto">
                             <label>Categoria</label>
                             <div class="input-wrapper-produto">
@@ -338,7 +439,6 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="campo-input-produto">
                             <label>Preço</label>
                             <div class="price-input-wrapper">
@@ -346,7 +446,6 @@
                                 <input type="text" id="productPrice" placeholder="0,00" value="">
                             </div>
                         </div>
-
                         <div class="campo-input-produto">
                             <label>Descrição</label>
                             <div class="input-wrapper-produto">
@@ -354,7 +453,6 @@
                                 <textarea id="productDescription" rows="3" placeholder="Insira os ingredientes, composição ou detalhes do item..."></textarea>
                             </div>
                         </div>
-
                         <button onclick="salvarProduto()" class="btn-salvar-produto">
                             <span class="material-symbols-outlined">save</span>
                             Salvar Produto
@@ -364,13 +462,13 @@
                 <nav class="navegacao-inferior"><button onclick="mudarTela('tela-10')" class="nav-item"><span class="material-symbols-outlined">home</span><span>Início</span></button><button onclick="mudarTela('tela-11')" class="nav-item"><span class="material-symbols-outlined">restaurant_menu</span><span>Cardápio</span></button><button onclick="mudarTela('tela-12')" class="nav-item"><span class="material-symbols-outlined">chat</span><span>Mensagens</span></button><button onclick="mudarTela('tela-13')" class="nav-item"><span class="material-symbols-outlined">settings</span><span>Ajustes</span></button></nav>
             </section>
 
-            <!-- TELA 15: PRODUTOS PARA CLIENTE -->
+            <!-- TELA 15: CARDÁPIO DA EMPRESA (para cliente) -->
             <section id="tela-15" class="tela">
                 <div class="tela-cabecalho">
-                    <button onclick="mudarTela('tela-5')" class="btn-voltar">
+                    <button onclick="mudarTela('tela-16')" class="btn-voltar">
                         <span class="material-symbols-outlined">arrow_back</span>
                     </button>
-                    <h1>Produtos Disponíveis</h1>
+                    <h1 id="titulo-cardapio-empresa">Cardápio</h1>
                 </div>
                 <div class="produto-conteudo">
                     <div id="listaProdutosCliente" class="produtos-cliente-grid"></div>
@@ -382,6 +480,28 @@
                     <button onclick="mudarTela('tela-9')" class="nav-item"><span class="material-symbols-outlined">person</span><span>Perfil</span></button>
                 </nav>
             </section>
+
+            <!-- TELA 16: LISTA DE EMPRESAS (nova) -->
+            <section id="tela-16" class="tela">
+                <div class="tela-cabecalho">
+                    <button onclick="mudarTela('tela-5')" class="btn-voltar">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                    </button>
+                    <h1>Restaurantes</h1>
+                </div>
+                <div class="produto-conteudo">
+                    <div id="listaEmpresas" style="display:flex; flex-direction:column; gap:12px; padding:16px;">
+                        <p style="text-align:center; color:#888;">Carregando...</p>
+                    </div>
+                </div>
+                <nav class="navegacao-inferior">
+                    <button onclick="mudarTela('tela-5')" class="nav-item"><span class="material-symbols-outlined">home</span><span>Início</span></button>
+                    <button onclick="mudarTela('tela-6')" class="nav-item"><span class="material-symbols-outlined">search</span><span>Buscar</span></button>
+                    <button onclick="mudarTela('tela-7')" class="nav-item"><span class="material-symbols-outlined">receipt_long</span><span>Pedidos</span></button>
+                    <button onclick="mudarTela('tela-9')" class="nav-item"><span class="material-symbols-outlined">person</span><span>Perfil</span></button>
+                </nav>
+            </section>
+
         </div>
     </div>
 
@@ -394,8 +514,15 @@
             collection,
             addDoc,
             getDocs,
+            getDoc,
+            doc,
+            setDoc,
+            updateDoc,
+            onSnapshot,
             query,
-            where
+            where,
+            orderBy,
+            serverTimestamp
         } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -414,6 +541,10 @@
         const provider = new GoogleAuthProvider();
         let tipoUsuario = null;
 
+        // ==========================================
+        // AUTH
+        // ==========================================
+
         window.irParaLogin = function(tipo) {
             tipoUsuario = tipo;
             mudarTela('tela-login');
@@ -430,16 +561,41 @@
                 const user = result.user;
                 const nome = user.displayName || "Usuário";
                 const email = user.email || "";
+
                 localStorage.setItem('tipoUsuario', tipoUsuario);
                 localStorage.setItem('nomeUsuario', nome);
                 localStorage.setItem('emailUsuario', email);
+
                 const nomePerfil = document.getElementById('nomePerfil');
                 const emailPerfil = document.getElementById('emailPerfil');
                 if (nomePerfil) nomePerfil.textContent = nome;
                 if (emailPerfil) emailPerfil.textContent = email;
-                if (tipoUsuario === 'cliente') mudarTela('tela-5');
-                else if (tipoUsuario === 'empresa') mudarTela('tela-10');
-                else mudarTela('tela-5');
+
+                if (tipoUsuario === 'empresa') {
+                    const empresaRef = doc(db, "empresas", user.uid);
+                    const empresaSnap = await getDoc(empresaRef);
+                    if (!empresaSnap.exists()) {
+                        await setDoc(empresaRef, {
+                            uid: user.uid,
+                            nome: nome,
+                            email: email,
+                            categoria: 'Restaurante',
+                            criadoEm: serverTimestamp()
+                        });
+                    }
+                    mudarTela('tela-10');
+                } else {
+                    mudarTela('tela-5');
+                    // Carrega localidade salva logo após login
+                    setTimeout(async () => {
+                        try {
+                            const snap = await getDoc(doc(db, "clientes", user.uid));
+                            if (snap.exists() && snap.data().localidade) {
+                                atualizarLocalidadeHome(snap.data().localidade);
+                            }
+                        } catch(e) {}
+                    }, 600);
+                }
             } catch (error) {
                 console.error("Erro no login:", error);
                 alert("Erro ao fazer login: " + error.message);
@@ -447,8 +603,12 @@
         };
 
         window.sairDaConta = function() {
+            if (unsubscribePedidosCliente) { unsubscribePedidosCliente(); unsubscribePedidosCliente = null; }
+            if (unsubscribePedidosEmpresa) { unsubscribePedidosEmpresa(); unsubscribePedidosEmpresa = null; }
+
             auth.signOut().then(() => {
                 tipoUsuario = null;
+                fotoPerfilBase64 = null;
                 localStorage.removeItem('tipoUsuario');
                 localStorage.removeItem('nomeUsuario');
                 localStorage.removeItem('emailUsuario');
@@ -456,26 +616,132 @@
             }).catch((error) => console.error("Erro ao sair:", error));
         };
 
-        // Função para abrir o cadastro de produto
+        // ==========================================
+        // PERFIL DO CLIENTE
+        // ==========================================
+
+        let fotoPerfilBase64 = null;
+
+        // Atualiza o texto de localidade na tela inicial
+        function atualizarLocalidadeHome(localidade) {
+            const enderecoEl = document.getElementById('home-local-endereco');
+            if (enderecoEl) {
+                enderecoEl.textContent = localidade && localidade.trim() !== '' ? localidade : 'Minha Localidade';
+            }
+        }
+
+        // Carrega dados salvos do Firestore e preenche a tela de perfil
+        window.carregarPerfilCliente = async function() {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            const nomePerfil = document.getElementById('nomePerfil');
+            const emailPerfil = document.getElementById('emailPerfil');
+            if (nomePerfil) nomePerfil.textContent = user.displayName || 'Usuário';
+            if (emailPerfil) emailPerfil.textContent = user.email || '';
+
+            // Foto padrão do Google enquanto carrega
+            const fotoEl = document.getElementById('perfilFotoEl');
+            if (fotoEl && user.photoURL) {
+                fotoEl.style.backgroundImage = `url('${user.photoURL}')`;
+            }
+
+            try {
+                const snap = await getDoc(doc(db, "clientes", user.uid));
+                if (snap.exists()) {
+                    const dados = snap.data();
+
+                    // Foto personalizada (sobrescreve a do Google)
+                    if (fotoEl && dados.foto) {
+                        fotoEl.style.backgroundImage = `url('${dados.foto}')`;
+                        fotoPerfilBase64 = dados.foto;
+                    }
+
+                    const tel = document.getElementById('perfilTelefone');
+                    if (tel && dados.telefone) tel.value = dados.telefone;
+
+                    const loc = document.getElementById('perfilLocalidade');
+                    if (loc && dados.localidade) loc.value = dados.localidade;
+
+                    // Garante que a home já reflete a localidade salva
+                    atualizarLocalidadeHome(dados.localidade || '');
+                }
+            } catch(e) {
+                console.error("Erro ao carregar perfil:", e);
+            }
+
+            // Listener do input de foto (evita duplicar)
+            const inputFoto = document.getElementById('inputFotoPerfil');
+            if (inputFoto && !inputFoto._listenerAdded) {
+                inputFoto.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = function(ev) {
+                        fotoPerfilBase64 = ev.target.result;
+                        const fotoEl = document.getElementById('perfilFotoEl');
+                        if (fotoEl) fotoEl.style.backgroundImage = `url('${fotoPerfilBase64}')`;
+                    };
+                    reader.readAsDataURL(file);
+                });
+                inputFoto._listenerAdded = true;
+            }
+        };
+
+        // Salva as alterações no Firestore
+        window.salvarPerfil = async function() {
+            const user = auth.currentUser;
+            if (!user) { alert('Você precisa estar logado.'); return; }
+
+            const telefone = document.getElementById('perfilTelefone')?.value.trim() || '';
+            const localidade = document.getElementById('perfilLocalidade')?.value.trim() || '';
+
+            const dados = {
+                uid: user.uid,
+                nome: user.displayName || '',
+                email: user.email || '',
+                telefone,
+                localidade,
+                atualizadoEm: serverTimestamp()
+            };
+
+            // Salva foto em base64 somente se o usuário escolheu uma da galeria
+            // Obs: para produção com fotos grandes, use Firebase Storage no lugar de base64
+            if (fotoPerfilBase64 && fotoPerfilBase64.startsWith('data:')) {
+                dados.foto = fotoPerfilBase64;
+            }
+
+            try {
+                await setDoc(doc(db, "clientes", user.uid), dados, { merge: true });
+                atualizarLocalidadeHome(localidade);
+                alert('✅ Perfil salvo com sucesso!');
+            } catch(e) {
+                console.error(e);
+                alert('Erro ao salvar perfil: ' + e.message);
+            }
+        };
+
+        // ==========================================
+        // CADASTRO DE PRODUTO
+        // ==========================================
+
         window.abrirCadastroProduto = function() {
             mudarTela('tela-14');
             setTimeout(inicializarCadastroProduto, 100);
         };
 
-        // Função para fechar e voltar ao cardápio
         window.fecharCadastroProduto = function() {
             mudarTela('tela-11');
         };
 
-        // SALVAR PRODUTO no Firestore
         window.salvarProduto = async function() {
-            const nome = document.getElementById("productName").value;
+            const nome = document.getElementById("productName").value.trim();
             const categoria = document.getElementById("productCategory").value;
-            const preco = document.getElementById("productPrice").value;
-            const descricao = document.getElementById("productDescription").value;
+            const preco = document.getElementById("productPrice").value.trim();
+            const descricao = document.getElementById("productDescription").value.trim();
 
             if (!nome || !categoria || !preco) {
-                alert("Preencha todos os campos.");
+                alert("Preencha todos os campos obrigatórios.");
                 return;
             }
 
@@ -485,13 +751,21 @@
                 return;
             }
 
+            let nomeEmpresa = user.displayName || "Empresa";
+            try {
+                const empresaSnap = await getDoc(doc(db, "empresas", user.uid));
+                if (empresaSnap.exists()) nomeEmpresa = empresaSnap.data().nome || nomeEmpresa;
+            } catch(e) {}
+
             try {
                 await addDoc(collection(db, "produtos"), {
-                    nome: nome,
-                    categoria: categoria,
-                    preco: preco,
-                    descricao: descricao,
-                    empresa: user.uid
+                    nome,
+                    categoria,
+                    preco,
+                    descricao,
+                    empresa: user.uid,
+                    nomeEmpresa,
+                    criadoEm: serverTimestamp()
                 });
 
                 alert("Produto cadastrado com sucesso!");
@@ -499,20 +773,18 @@
                 document.getElementById("productName").value = "";
                 document.getElementById("productPrice").value = "";
                 document.getElementById("productDescription").value = "";
+                document.getElementById("productCategory").selectedIndex = 0;
 
-                // Resetar foto
                 const uploadArea = document.getElementById('uploadArea');
                 const previewContainer = document.getElementById('photoPreviewContainer');
                 const fileInput = document.getElementById('productPhotoInput');
                 const previewImg = document.getElementById('previewImg');
-                
                 if (fileInput) fileInput.value = '';
                 if (previewImg) previewImg.src = '#';
                 if (previewContainer) previewContainer.style.display = 'none';
                 if (uploadArea) uploadArea.style.display = 'flex';
 
                 carregarProdutos();
-
                 mudarTela("tela-11");
 
             } catch (erro) {
@@ -521,42 +793,36 @@
             }
         };
 
-        // CARREGAR PRODUTOS do Firestore (para empresa)
+        // ==========================================
+        // CARDÁPIO DA EMPRESA (tela-11)
+        // ==========================================
+
         window.carregarProdutos = async function() {
             const lista = document.getElementById("cardapio-content");
             if (!lista) return;
-            
             lista.innerHTML = "";
-            
             const user = auth.currentUser;
             if (!user) {
                 lista.innerHTML = '<p style="text-align:center; padding:20px;">Faça login para ver seus produtos</p>';
                 return;
             }
-
             try {
                 const q = query(collection(db, "produtos"), where("empresa", "==", user.uid));
                 const produtos = await getDocs(q);
-                
                 if (produtos.empty) {
                     lista.innerHTML = '<p style="text-align:center; padding:20px;">Nenhum produto cadastrado. Clique no + para adicionar.</p>';
                     return;
                 }
-                
                 let categoriasMap = new Map();
-                
                 produtos.forEach((doc) => {
                     const produto = doc.data();
-                    if (!categoriasMap.has(produto.categoria)) {
-                        categoriasMap.set(produto.categoria, []);
-                    }
+                    if (!categoriasMap.has(produto.categoria)) categoriasMap.set(produto.categoria, []);
                     categoriasMap.get(produto.categoria).push(produto);
                 });
-                
                 for (let [categoria, produtosList] of categoriasMap) {
                     lista.innerHTML += `<h3>${categoria}</h3>`;
                     produtosList.forEach(produto => {
-                        let precoFormatado = `R$ ${parseFloat(produto.preco).toFixed(2).replace('.', ',')}`;
+                        let precoFormatado = `R$ ${parseFloat(produto.preco.replace(',','.')).toFixed(2).replace('.', ',')}`;
                         lista.innerHTML += `
                             <div class="cardapio-item">
                                 <div>
@@ -578,79 +844,316 @@
             }
         };
 
-        // CARREGAR PRODUTOS PARA CLIENTE (todos os produtos)
-        window.carregarProdutosCliente = async function() {
-            const lista = document.getElementById("listaProdutosCliente");
-            if (!lista) return;
-            
-            lista.innerHTML = '<p style="text-align:center; padding:20px;">Carregando produtos...</p>';
-            
+        // ==========================================
+        // LISTA DE EMPRESAS (tela-16)
+        // ==========================================
+
+        window.abrirListaEmpresas = async function() {
+            mudarTela('tela-16');
+            const lista = document.getElementById('listaEmpresas');
+            lista.innerHTML = '<p style="text-align:center; color:#888;">Carregando empresas...</p>';
             try {
-                const produtos = await getDocs(collection(db, "produtos"));
-                
-                if (produtos.empty) {
-                    lista.innerHTML = '<p style="text-align:center; padding:20px;">Nenhum produto disponível no momento.</p>';
+                const snap = await getDocs(collection(db, "empresas"));
+                if (snap.empty) {
+                    lista.innerHTML = '<p style="text-align:center; color:#888;">Nenhuma empresa disponível no momento.</p>';
                     return;
                 }
-                
-                lista.innerHTML = "";
-                
-                produtos.forEach((doc) => {
-                    const p = doc.data();
-                    let precoFormatado = `R$ ${parseFloat(p.preco).toFixed(2).replace('.', ',')}`;
-                    lista.innerHTML += `
-                        <div class="produto-cliente-card">
-                            <h3>${p.nome}</h3>
-                            <p>${p.descricao || ''}</p>
+                lista.innerHTML = '';
+                snap.forEach(docEmp => {
+                    const e = docEmp.data();
+                    const card = document.createElement('div');
+                    card.style.cssText = 'background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,0.08);cursor:pointer;display:flex;align-items:center;gap:14px;transition:transform 0.15s;';
+                    card.innerHTML = `
+                        <div style="width:52px;height:52px;background:rgba(229,6,21,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <span class="material-symbols-outlined" style="color:var(--primary);font-size:26px;">storefront</span>
+                        </div>
+                        <div>
+                            <h3 style="margin:0;font-size:15px;font-weight:600;">${e.nome}</h3>
+                            <p style="margin:4px 0 0;font-size:12px;color:#888;">${e.categoria || 'Restaurante'}</p>
+                        </div>
+                        <span class="material-symbols-outlined" style="margin-left:auto;color:#ccc;">chevron_right</span>
+                    `;
+                    card.onclick = () => abrirCardapioEmpresa(docEmp.id, e.nome);
+                    lista.appendChild(card);
+                });
+            } catch (err) {
+                console.error(err);
+                lista.innerHTML = '<p style="text-align:center; color:#888;">Erro ao carregar empresas.</p>';
+            }
+        };
+
+        // ==========================================
+        // CARDÁPIO DE UMA EMPRESA (tela-15)
+        // ==========================================
+
+        let empresaSelecionada = null;
+
+        window.abrirCardapioEmpresa = async function(empresaId, empresaNome) {
+            empresaSelecionada = { id: empresaId, nome: empresaNome };
+            mudarTela('tela-15');
+
+            const titulo = document.getElementById('titulo-cardapio-empresa');
+            if (titulo) titulo.textContent = empresaNome;
+
+            const lista = document.getElementById('listaProdutosCliente');
+            lista.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">Carregando cardápio...</p>';
+
+            try {
+                const q = query(collection(db, "produtos"), where("empresa", "==", empresaId));
+                const snap = await getDocs(q);
+                if (snap.empty) {
+                    lista.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">Esta empresa ainda não tem produtos cadastrados.</p>';
+                    return;
+                }
+                lista.innerHTML = '';
+                snap.forEach(docProd => {
+                    const p = docProd.data();
+                    const precoNum = parseFloat(p.preco.replace(',', '.'));
+                    const precoFormatado = `R$ ${precoNum.toFixed(2).replace('.', ',')}`;
+                    const card = document.createElement('div');
+                    card.className = 'produto-cliente-card';
+                    card.innerHTML = `
+                        <h3>${p.nome}</h3>
+                        <p>${p.descricao || ''}</p>
+                        <strong>${precoFormatado}</strong>
+                        <button class="btn-adicionar-carrinho" onclick="fazerPedido('${docProd.id}', '${p.nome.replace(/'/g,"\\'")}', '${p.preco}', '${empresaId}', '${empresaNome.replace(/'/g,"\\'")}')">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                            Pedir
+                        </button>
+                    `;
+                    lista.appendChild(card);
+                });
+            } catch (err) {
+                console.error(err);
+                lista.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">Erro ao carregar cardápio.</p>';
+            }
+        };
+
+        // ==========================================
+        // FAZER PEDIDO REAL
+        // ==========================================
+
+        window.fazerPedido = async function(produtoId, nomeProduto, preco, empresaId, empresaNome) {
+            const user = auth.currentUser;
+            if (!user) {
+                alert('Você precisa estar logado para fazer um pedido.');
+                return;
+            }
+            if (!confirm(`Confirmar pedido de "${nomeProduto}"?`)) return;
+
+            try {
+                await addDoc(collection(db, "pedidos"), {
+                    clienteId: user.uid,
+                    clienteNome: user.displayName || "Cliente",
+                    clienteEmail: user.email || "",
+                    empresaId: empresaId,
+                    empresaNome: empresaNome,
+                    produtoId: produtoId,
+                    nomeProduto: nomeProduto,
+                    preco: preco,
+                    quantidade: 1,
+                    status: "Pendente",
+                    criadoEm: serverTimestamp()
+                });
+                alert(`✅ Pedido de "${nomeProduto}" enviado!\nAguarde a confirmação da empresa.`);
+                mudarTela('tela-7');
+            } catch (err) {
+                console.error(err);
+                alert('Erro ao fazer pedido: ' + err.message);
+            }
+        };
+
+        // ==========================================
+        // PEDIDOS DO CLIENTE EM TEMPO REAL (tela-7)
+        // ==========================================
+
+        let unsubscribePedidosCliente = null;
+
+        window.carregarPedidosCliente = function() {
+            const user = auth.currentUser;
+            const lista = document.getElementById('pedidos-cliente-lista');
+            if (!lista) return;
+
+            if (!user) {
+                lista.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">Faça login para ver seus pedidos.</p>';
+                return;
+            }
+
+            if (unsubscribePedidosCliente) unsubscribePedidosCliente();
+
+            lista.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">Carregando...</p>';
+
+            const q = query(
+                collection(db, "pedidos"),
+                where("clienteId", "==", user.uid)
+            );
+
+            unsubscribePedidosCliente = onSnapshot(q, (snap) => {
+                if (snap.empty) {
+                    lista.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">Você ainda não fez nenhum pedido.</p>';
+                    return;
+                }
+
+                const pedidos = [];
+                snap.forEach(d => pedidos.push({ id: d.id, ...d.data() }));
+                pedidos.sort((a, b) => {
+                    const ta = a.criadoEm?.seconds || 0;
+                    const tb = b.criadoEm?.seconds || 0;
+                    return tb - ta;
+                });
+
+                lista.innerHTML = '';
+                pedidos.forEach(p => {
+                    const corStatus = p.status === 'Aceito' ? '#10b981' : p.status === 'Recusado' ? '#ef4444' : '#f59e0b';
+                    const iconeStatus = p.status === 'Aceito' ? 'check_circle' : p.status === 'Recusado' ? 'cancel' : 'schedule';
+                    const precoNum = parseFloat((p.preco || '0').replace(',', '.'));
+                    const precoFormatado = `R$ ${precoNum.toFixed(2).replace('.', ',')}`;
+
+                    const div = document.createElement('div');
+                    div.className = 'pedido-card';
+                    div.style.cssText = 'margin-bottom:12px;';
+                    div.innerHTML = `
+                        <div class="pedido-info">
+                            <div class="pedido-titulo">
+                                <h3>${p.empresaNome || 'Empresa'}</h3>
+                                <span style="display:flex;align-items:center;gap:4px;background:${corStatus};color:#fff;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;">
+                                    <span class="material-symbols-outlined" style="font-size:13px;">${iconeStatus}</span>
+                                    ${p.status}
+                                </span>
+                            </div>
+                            <p class="pedido-descricao">1x ${p.nomeProduto}</p>
+                            <p class="pedido-data" style="color:#e50615;font-weight:600;">${precoFormatado}</p>
+                        </div>
+                    `;
+                    lista.appendChild(div);
+                });
+            }, (err) => {
+                console.error(err);
+                lista.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">Erro ao carregar pedidos.</p>';
+            });
+        };
+
+        // ==========================================
+        // PEDIDOS DA EMPRESA EM TEMPO REAL (tela-10)
+        // ==========================================
+
+        let unsubscribePedidosEmpresa = null;
+
+        window.carregarPedidosEmpresa = function() {
+            const user = auth.currentUser;
+            const lista = document.getElementById('loja-pedidos-lista');
+            if (!lista) return;
+
+            if (!user) {
+                lista.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">Faça login para ver os pedidos.</p>';
+                return;
+            }
+
+            if (unsubscribePedidosEmpresa) unsubscribePedidosEmpresa();
+
+            lista.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">Carregando...</p>';
+
+            const q = query(
+                collection(db, "pedidos"),
+                where("empresaId", "==", user.uid),
+                where("status", "==", "Pendente")
+            );
+
+            unsubscribePedidosEmpresa = onSnapshot(q, (snap) => {
+                const contador = document.getElementById('contador-pendentes');
+                if (contador) contador.textContent = snap.size;
+
+                if (snap.empty) {
+                    lista.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">Nenhum pedido pendente no momento.</p>';
+                    return;
+                }
+
+                lista.innerHTML = '';
+                snap.forEach(docPed => {
+                    const p = docPed.data();
+                    const precoNum = parseFloat((p.preco || '0').replace(',', '.'));
+                    const precoFormatado = `R$ ${precoNum.toFixed(2).replace('.', ',')}`;
+
+                    const div = document.createElement('div');
+                    div.className = 'loja-pedido';
+                    div.innerHTML = `
+                        <div class="pedido-top">
+                            <strong>${p.clienteNome || 'Cliente'}</strong>
                             <strong>${precoFormatado}</strong>
-                            <button class="btn-adicionar-carrinho" onclick="adicionarAoCarrinho('${p.nome}', '${precoFormatado}')">
-                                <span class="material-symbols-outlined">shopping_cart</span>
-                                Adicionar
+                        </div>
+                        <div class="pedido-list" style="margin:6px 0;">1x ${p.nomeProduto}</div>
+                        <div style="display:flex;gap:8px;margin-top:10px;">
+                            <button style="flex:1;padding:10px;background:#10b981;color:#fff;border:none;border-radius:10px;font-weight:600;cursor:pointer;font-size:14px;" 
+                                onclick="responderPedido('${docPed.id}', 'Aceito')">
+                                ✓ Aceitar
+                            </button>
+                            <button style="flex:1;padding:10px;background:#ef4444;color:#fff;border:none;border-radius:10px;font-weight:600;cursor:pointer;font-size:14px;" 
+                                onclick="responderPedido('${docPed.id}', 'Recusado')">
+                                ✗ Recusar
                             </button>
                         </div>
                     `;
+                    lista.appendChild(div);
                 });
-            } catch (erro) {
-                console.error(erro);
-                lista.innerHTML = '<p style="text-align:center; padding:20px;">Erro ao carregar produtos</p>';
-            }
-        };
-        
-        window.adicionarAoCarrinho = function(nome, preco) {
-            alert(`"${nome}" adicionado ao carrinho! Valor: ${preco}`);
-        };
-        
-        window.abrirProdutosCliente = function() {
-            mudarTela('tela-15');
-            setTimeout(carregarProdutosCliente, 100);
+            }, (err) => {
+                console.error(err);
+                lista.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">Erro ao carregar pedidos.</p>';
+            });
         };
 
-        // Adicionar botão na home cliente para ver produtos
-        window.addEventListener('DOMContentLoaded', function() {
-            const categoriasGrid = document.querySelector('#tela-5 .categorias-grid');
-            if (categoriasGrid) {
-                const btnVerProdutos = document.createElement('button');
-                btnVerProdutos.className = 'categoria';
-                btnVerProdutos.onclick = () => abrirProdutosCliente();
-                btnVerProdutos.innerHTML = '<div class="categoria-icone"><span class="material-symbols-outlined">restaurant_menu</span></div><span>Ver Cardápio</span>';
-                categoriasGrid.appendChild(btnVerProdutos);
+        // ACEITAR OU RECUSAR PEDIDO
+        window.responderPedido = async function(pedidoId, novoStatus) {
+            try {
+                await updateDoc(doc(db, "pedidos", pedidoId), { status: novoStatus });
+                if (novoStatus === 'Aceito') {
+                    const contadorPreparo = document.getElementById('contador-preparo');
+                    if (contadorPreparo) {
+                        contadorPreparo.textContent = (parseInt(contadorPreparo.textContent) || 0) + 1;
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Erro ao atualizar pedido: ' + err.message);
             }
-            
+        };
+
+        // ==========================================
+        // INICIALIZAÇÃO
+        // ==========================================
+
+        window.addEventListener('DOMContentLoaded', function() {
             carregarProdutos();
-            
+
             const tipoSalvo = localStorage.getItem('tipoUsuario');
             const nomeSalvo = localStorage.getItem('nomeUsuario');
             const emailSalvo = localStorage.getItem('emailUsuario');
+
             if (tipoSalvo && nomeSalvo) {
                 tipoUsuario = tipoSalvo;
                 const nomePerfil = document.getElementById('nomePerfil');
                 const emailPerfil = document.getElementById('emailPerfil');
                 if (nomePerfil) nomePerfil.textContent = nomeSalvo;
                 if (emailPerfil) emailPerfil.textContent = emailSalvo;
-                if (tipoSalvo === 'cliente') mudarTela('tela-5');
-                else if (tipoSalvo === 'empresa') mudarTela('tela-10');
+
+                if (tipoSalvo === 'cliente') {
+                    mudarTela('tela-5');
+                    // Carrega localidade salva no reload
+                    setTimeout(async () => {
+                        const u = auth.currentUser;
+                        if (!u) return;
+                        try {
+                            const snap = await getDoc(doc(db, "clientes", u.uid));
+                            if (snap.exists() && snap.data().localidade) {
+                                atualizarLocalidadeHome(snap.data().localidade);
+                            }
+                        } catch(e) {}
+                    }, 1200);
+                } else if (tipoSalvo === 'empresa') {
+                    mudarTela('tela-10');
+                }
             }
         });
+
     </script>
 </body>
 </html>
