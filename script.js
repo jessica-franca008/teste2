@@ -12,7 +12,10 @@ function mudarTela(idTela) {
     }
     
     if (idTela === 'tela-10') {
-        setTimeout(inicializarSwitchLoja, 100);
+        setTimeout(() => {
+            inicializarSwitchLoja();
+            if (typeof carregarPedidosEmpresa === 'function') carregarPedidosEmpresa();
+        }, 100);
     }
     
     if (idTela === 'tela-11') {
@@ -36,10 +39,23 @@ function mudarTela(idTela) {
     if (idTela === 'tela-14') {
         setTimeout(inicializarCadastroProduto, 100);
     }
+
+    if (idTela === 'tela-7') {
+        setTimeout(() => {
+            if (typeof carregarPedidosCliente === 'function') carregarPedidosCliente();
+        }, 100);
+    }
     
     if (idTela === 'tela-15') {
         setTimeout(() => {
             if (typeof carregarProdutosCliente === 'function') carregarProdutosCliente();
+        }, 100);
+    }
+
+    // NOVO: carrega perfil do cliente ao abrir tela-9
+    if (idTela === 'tela-9') {
+        setTimeout(() => {
+            if (typeof carregarPerfilCliente === 'function') carregarPerfilCliente();
         }, 100);
     }
 }
@@ -58,10 +74,6 @@ function inicializarCadastroProduto() {
     const previewImg = document.getElementById('previewImg');
     const previewFileNameSpan = document.getElementById('previewFileName');
     const removePhotoBtn = document.getElementById('removePhotoBtn');
-    const productNameInput = document.getElementById('productName');
-    const categorySelect = document.getElementById('productCategory');
-    const priceInput = document.getElementById('productPrice');
-    const descriptionTextarea = document.getElementById('productDescription');
     
     if (!uploadArea) return;
     
@@ -324,7 +336,7 @@ function pararGravacao() {
 
 function exibirAudioGravado(audioBlob) {
     const chatMessages = document.getElementById('chat-mensagens');
-    const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-minute' });
+    const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
     
     const audioDiv = document.createElement('div');
     audioDiv.className = 'mensagem mensagem-enviada';
@@ -403,7 +415,7 @@ function inicializarSwitchLoja() {
     }
 }
 
-// ACEITAR PEDIDO
+// ACEITAR PEDIDO (função legada mantida por compatibilidade)
 function aceitarPedido(botao) {
     const pedidoDiv = botao.closest('.loja-pedido');
     if (pedidoDiv) {
